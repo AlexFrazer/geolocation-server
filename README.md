@@ -3,5 +3,5 @@
 ### Usage
 ```sh
 $ pip install -e .
-$ app run
+$ API_KEY=<your api key> app run
 ```
