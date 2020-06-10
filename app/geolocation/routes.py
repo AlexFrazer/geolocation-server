@@ -1,4 +1,5 @@
 from app.geolocation import bp
+from functools import wraps
 from flask import jsonify, request
 from pprint import pprint
 from app.geolocation.models import geocode as geocode_lookup, get_distance
@@ -17,24 +18,16 @@ def map_distances(latitude, longitude, access_point):
 @bp.route('/<string:query>')
 def geocode(query):
   """ Return the distance between yourself and a target location """
+  loc = geocode_lookup(query)
+  print(loc)
+
   latitude = request.args.get('latitude', type=float)
   longitude = request.args.get('longitude', type=float)
+  print(latitude, longitude)
 
-  if not latitude:
-    return jsonify({ 'message': 'Latitude required' }), 403
+  if latitude is None or longitude is None:
+    return jsonify({ 'message': 'Missing latitude or longitude parameter' }), 403
 
-  if not longitude:
-    return jsonify({ 'message': 'Longitude required' }), 403
-
-  loc = geocode_lookup(query)
   result = (loc.get('results')[0]).get('access_points')
   data = [x for x in map(lambda point: map_distances(latitude, longitude, point), result)]
-
-  return jsonify(
-    result={
-      'status': 'success',
-      'data': data
-    },
-    indent=2,
-    sort_keys=True
-  ), 200
+  return jsonify(status='success', data=data), 200
