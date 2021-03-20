@@ -6,7 +6,7 @@ Flask-Nicely==0.2.0
 -e git+git@github.com:AlexFrazer/geolocation-server.git@08249c000c1099de7d55161a2709189258eb396a#egg=geolocation
 idna==2.9
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 requests==2.23.0
 urllib3==1.25.9
